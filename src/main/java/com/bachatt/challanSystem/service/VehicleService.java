@@ -62,14 +62,27 @@ public class VehicleService {
         return vehicle;
     }
     public List<Vehicle> getByCity(String city) {
-        return vehicleRepository.findByCityIgnoreCase(city);
+        List<Vehicle> vehicles = vehicleRepository.findByCityIgnoreCase(city);
+        if(vehicles.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No vehicles found in city: " + city);
+        }
+        return vehicles;
     }
 
     public List<Vehicle> getByState(String state) {
-        return vehicleRepository.findByStateIgnoreCase(state);
+        List<Vehicle> vehicles = vehicleRepository.findByStateIgnoreCase(state);
+        if(vehicles.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No vehicles found in state: " + state);
+        }
+        return vehicles;
     }
 
     public List<Vehicle> getByFuel(String fuel) {
-        return vehicleRepository.findByFuelTypeIgnoreCase(fuel);
+        List<Vehicle> vehicles = vehicleRepository.findByFuelTypeIgnoreCase(fuel);
+        if(vehicles.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No vehicles found with fuel type: " + fuel);
+        }
+        return vehicles;
+
     }
 }
