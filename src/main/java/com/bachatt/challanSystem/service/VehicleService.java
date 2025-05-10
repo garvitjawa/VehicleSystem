@@ -61,6 +61,17 @@ public class VehicleService {
         vehicleRepository.deleteById(id);
         return vehicle;
     }
+    public List<Vehicle> searchVehicles(String city, String state, String fuel) {
+        if (city != null) {
+            return getByCity(city);
+        } else if (state != null) {
+            return getByState(state);
+        } else if (fuel != null) {
+            return getByFuel(fuel);
+        }
+        throw new IllegalArgumentException("No search parameter provided");
+    }
+
     public List<Vehicle> getByCity(String city) {
         List<Vehicle> vehicles = vehicleRepository.findByCityIgnoreCase(city);
         if(vehicles.isEmpty()){
@@ -83,6 +94,5 @@ public class VehicleService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No vehicles found with fuel type: " + fuel);
         }
         return vehicles;
-
     }
 }
