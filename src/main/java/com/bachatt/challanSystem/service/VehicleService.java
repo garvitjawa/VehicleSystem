@@ -3,15 +3,16 @@ package com.bachatt.challanSystem.service;
 import com.bachatt.challanSystem.model.Vehicle;
 import com.bachatt.challanSystem.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.*;
-import com.bachatt.challanSystem.exception.GlobalExceptionHandler;
 import com.bachatt.challanSystem.exception.DuplicateVehicleException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
 import com.bachatt.challanSystem.exception.ResourceNotFoundException;
+
 @Service
 public class VehicleService {
 
@@ -94,5 +95,10 @@ public class VehicleService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No vehicles found with fuel type: " + fuel);
         }
         return vehicles;
+    }
+
+    public Page<Vehicle> getVehiclesWithPagination(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return vehicleRepository.findAll(pageable);
     }
 }
